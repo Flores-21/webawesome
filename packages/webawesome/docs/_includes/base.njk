@@ -41,72 +41,79 @@
         {% endif %}
       {% endfor %}
     >
-        {% block pageBanner %}
-          {% if hasBanner %}
-            {#- WA Launch Banner -#}
-            {% include "_banner-wa-launch.njk" ignore missing %}
-          {% endif %}
-        {% endblock %}
+      {% block pageBanner %}
+        {% if hasBanner %}
+          {#- WA Launch Banner -#}
+          {% include "_banner-wa-launch.njk" ignore missing %}
+        {% endif %}
+      {% endblock %}
 
-        {% block pageHeader %}
-          <header slot="header" class="wa-split">
-            {# Nav toggle #}
-              <wa-button appearance="plain" size="small" data-toggle-nav>
-                <wa-icon name="bars" label="Toggle navigation" class="icon-default icon-embiggen"></wa-icon>
-                <wa-icon name="burger" aria-hidden="true" class="icon-hover icon-embiggen"></wa-icon>
-              </wa-button>
+      {% block pageHeader %}
+        <header slot="header" class="wa-split">
+          {# Nav toggle #}
+            <wa-button appearance="plain" size="small" data-toggle-nav>
+              <wa-icon name="bars" label="Toggle navigation" class="icon-default icon-embiggen"></wa-icon>
+              <wa-icon name="burger" aria-hidden="true" class="icon-hover icon-embiggen"></wa-icon>
+            </wa-button>
 
-              {# Logo - Desktop #}
-              <a class="brand-logo wa-desktop-only" href="/" aria-label="Web Awesome">
-                {% include "logo.njk" %}
-              </a>
-
-            {#- Logo - mobile branding -#}
-            <a href="/" class="brand-logo wa-mobile-only" aria-label="Web Awesome">
-              {# Logo - Mobile #}
-              {% include "logo-simple.njk" %}
+            {# Logo - Desktop #}
+            <a class="brand-logo wa-desktop-only" href="/" aria-label="Web Awesome">
+              {% include "logo.njk" %}
             </a>
 
-            <div id="docs-toolbar" class="wa-cluster gap-s">
-              <div class="wa-desktop-only wa-cluster wa-gap-2xs">
-                {% include "theme-selector.njk" %}
-                {% include "color-scheme-selector.njk" %}
-                {% include "github-icon-buttons.njk" %}
-              </div>
-              {#- Login -#}
-              {% include "login-or-avatar.njk" ignore missing %}
-            </div>
-          </header>
-        {% endblock %}
+          {#- Logo - mobile branding -#}
+          <a href="/" class="brand-logo wa-mobile-only" aria-label="Web Awesome">
+            {# Logo - Mobile #}
+            {% include "logo-simple.njk" %}
+          </a>
 
-      {# Sidebar #}
-      {% if hasSidebar %}
-        {# Mobile selectors #}
-        <div class="wa-mobile-only" slot="navigation-header">
-          <div class="wa-cluster wa-gap-s">
-            <a class="brand-logo" href="/" aria-label="Web Awesome">{% include "logo-simple.njk" %}</a>
-            <div class="wa-cluster wa-gap-2xs" style="flex-wrap: nowrap;">
+          <div id="docs-toolbar" class="wa-cluster gap-s">
+            <div class="wa-desktop-only wa-cluster wa-gap-2xs">
               {% include "theme-selector.njk" %}
               {% include "color-scheme-selector.njk" %}
               {% include "github-icon-buttons.njk" %}
             </div>
+
+            {#- Login -#}
+            {% include "login-or-avatar.njk" ignore missing %}
           </div>
-        </div>
-        <div slot="navigation" id="sidebar" class="docs-aside" data-remember-scroll>
-          {% include "sidebar.njk" %}
-        </div>
-      {% endif %}
+        </header>
+      {% endblock %}
 
-      {# Outline #}
-      {% if hasOutline %}
-        <aside slot="aside" id="outline" class="docs-aside">
-          <nav id="outline-standard" class="outline-links">
-            <h2><a href="#content">{{ title }}</a></h2>
-          </nav>
-        </aside>
-      {% endif %}
+      {# wa-page-based Navigation Header #}
+      {% block pageNavigationHeader %}
+        {# Sidebar - Mobile Selectors #}
+        {% if hasSidebar %}
+          <div class="wa-mobile-only" slot="navigation-header">
+            <div class="wa-cluster wa-gap-s">
+              <a class="brand-logo" href="/" aria-label="Web Awesome">{% include "logo-simple.njk" %}</a>
+              <div class="wa-cluster wa-gap-2xs" style="flex-wrap: nowrap;">
+                {% include "theme-selector.njk" %}
+                {% include "color-scheme-selector.njk" %}
+                {% include "github-icon-buttons.njk" %}
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endblock %}
 
-      {# Main #}
+      {# wa-page-based Navigation #}
+      {% block pageNavigation %}
+        {# Sidebar - Navigation #}
+        {% if hasSidebar %}
+          <div slot="navigation" id="sidebar" class="docs-aside" data-remember-scroll>
+            {% include "sidebar.njk" %}
+          </div>
+        {% endif %}
+      {% endblock %}
+
+      {# wa-page-based Navigation Footer #}
+      {% block pageNavigationFooter %}{% endblock %}
+
+      {# wa-page-based Main Header #}
+      {% block pageMainHeader %}{% endblock %}
+
+      {# wa-page-based Main Content (default) #}
       <main id="content">
         {# Expandable outline #}
         {% if hasOutline %}
@@ -117,7 +124,10 @@
         </nav>
         {% endif %}
 
-        <div id="flashes">{% server "flashes" %}</div>
+        {# Flashes #}
+        {% block flashes %}
+          <div id="flashes">{% server "flashes" %}</div>
+        {% endblock %}
 
         {% block header %}
           <h1 class="title">{{ title }}</h1>
@@ -134,7 +144,22 @@
 
       {% include 'search.njk' %}
 
-      {# Footer #}
+      {# wa-page-based Main Footer #}
+      {% block pageMainFooter %}{% endblock %}
+
+      {# wa-page-based Aside #}
+      {% block pageAside %}
+        {# Outline #}
+        {% if hasOutline %}
+          <aside slot="aside" id="outline" class="docs-aside">
+            <nav id="outline-standard" class="outline-links">
+              <h2><a href="#content">{{ title }}</a></h2>
+            </nav>
+          </aside>
+        {% endif %}
+      {% endblock %}
+
+      {# wa-page-based Footer #}
       {% block pageFooter %}{% endblock %}
     </wa-page>
 
